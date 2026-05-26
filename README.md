@@ -11,6 +11,14 @@ A FastAPI learning project for an ecommerce analytics dashboard with PostgreSQL,
 - Swagger API 文档
 - 简单前端页面如何调用后端 API
 
+## 项目来源与用途说明
+
+本项目基于开源 FastAPI 模板进行学习、注释、重构与功能扩展。它并非声明为从零开始的原创项目，而是一个面向学习目的的二次开发实践项目。
+
+原项目采用 MIT License，本仓库保留原始许可证、历史提交与原作者署名。在此基础上，本仓库新增了电商数据分析模块、PostgreSQL 演示数据、Redis 缓存观察、可视化文档以及面向初学者的中文代码注释。
+
+本项目主要用于个人学习 FastAPI、Docker、Redis、PostgreSQL 与后端工程结构，不用于商业用途。
+
 ## 功能概览
 
 - 电商经营总览页面
