@@ -7,42 +7,40 @@ from alembic import context
 
 from app.settings import settings
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+# Alembic 的 Config 对象，负责读取 alembic.ini 里的迁移配置。
 config = context.config
 
-# this will overwrite the DB url for sqlalchemy
+# 用项目 settings.py 中的 DB_URL 覆盖 alembic.ini 里的占位数据库地址。
+# 这样迁移命令会连接 .env 指定的 PostgreSQL。
 config.set_main_option("sqlalchemy.url", settings.DB_URL)
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
+# 根据 alembic.ini 中的 logging 配置初始化日志。
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
+# 导入模型集合，让 Alembic 能发现 SQLAlchemy 模型。
+# autogenerate 自动生成迁移脚本时会比较 target_metadata 和真实数据库结构。
 from app import models
 target_metadata = models.Base.metadata
 
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
+# 如果有其他 Alembic 配置项，也可以从 config 中读取。
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
+    """离线模式运行迁移。
 
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
+    离线模式只需要数据库 URL，不需要真实建立数据库连接。
+    它通常用于生成 SQL 脚本，而不是直接修改数据库。
 
-    Calls to context.execute() here emit the given string to the
-    script output.
+    context.execute(...) 会把 SQL 输出到脚本中。
 
     """
+
     url = config.get_main_option("sqlalchemy.url")
+
+    # context.configure 用来告诉 Alembic 当前迁移上下文怎么运行。
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -50,23 +48,27 @@ def run_migrations_offline() -> None:
         dialect_opts={"paramstyle": "named"},
     )
 
+    # begin_transaction 开启迁移事务。
     with context.begin_transaction():
+        # 执行迁移脚本。
         context.run_migrations()
 
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+    """在线模式运行迁移。
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
+    在线模式会真实连接数据库，并直接执行迁移。
 
     """
+
+    # 根据 alembic.ini 和 settings.DB_URL 创建数据库连接引擎。
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
+    # 建立数据库连接，并把连接交给 Alembic。
     with connectable.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
@@ -76,6 +78,7 @@ def run_migrations_online() -> None:
             context.run_migrations()
 
 
+# 根据当前运行模式选择离线迁移或在线迁移。
 if context.is_offline_mode():
     run_migrations_offline()
 else:

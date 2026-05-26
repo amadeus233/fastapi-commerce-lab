@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#334155"/></marker>
+  <style>.title{font:700 40px "Microsoft YaHei",Arial;fill:#111827}.sub{font:400 19px "Microsoft YaHei",Arial;fill:#475569}.h{font:700 23px "Microsoft YaHei",Arial;fill:#111827}.t{font:400 16px "Microsoft YaHei",Arial;fill:#334155}.c{font:700 15px Consolas,monospace;fill:#0f172a}.line{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#64748b;stroke-width:2.4;fill:none;marker-end:url(#arrow);stroke-dasharray:8 7}</style></defs>
+  <rect width="1500" height="900" fill="#f8fafc"/>
+  <text x="70" y="70" class="title">Docker、PostgreSQL、Redis 运行关系</text>
+  <text x="72" y="108" class="sub">Docker Compose 启动 web / postgres / redis，形成本地后端学习环境。</text>
+
+  <rect x="70" y="155" width="1360" height="620" rx="28" fill="#eff6ff" stroke="#93c5fd" stroke-width="3"/>
+  <text x="110" y="205" class="h">Docker Compose 网络</text>
+
+  <rect x="130" y="260" width="300" height="185" rx="20" fill="#fff" stroke="#2563eb" stroke-width="3"/>
+  <text x="165" y="310" class="h">web 容器</text><text x="165" y="345" class="t">FastAPI + Uvicorn</text><text x="165" y="375" class="c">localhost:11000</text><text x="165" y="405" class="t">电商看板和 API</text>
+
+  <rect x="600" y="235" width="330" height="230" rx="20" fill="#fff" stroke="#16a34a" stroke-width="3"/>
+  <text x="635" y="285" class="h">postgres 容器</text><text x="635" y="320" class="t">PostgreSQL 业务数据</text><text x="635" y="350" class="c">ecommerce_customers: 320</text><text x="635" y="378" class="c">ecommerce_products: 150</text><text x="635" y="406" class="c">ecommerce_orders: 2500</text><text x="635" y="434" class="c">ecommerce_order_items: 6264</text>
+
+  <rect x="1065" y="235" width="300" height="230" rx="20" fill="#fff" stroke="#dc2626" stroke-width="3"/>
+  <text x="1100" y="285" class="h">redis 容器</text><text x="1100" y="320" class="t">应用层缓存</text><text x="1100" y="350" class="c">ecommerce:dashboard:*</text><text x="1100" y="378" class="t">看板 JSON 缓存</text><text x="1100" y="406" class="c">ecommerce:events</text><text x="1100" y="434" class="t">最近查询事件 List</text>
+
+  <path d="M430 330 H600" class="line"/><text x="470" y="312" class="c">SQL 查询</text>
+  <path d="M430 395 C620 555 1010 555 1110 465" class="dash"/><text x="620" y="545" class="c">Redis GET / SET / LPUSH</text>
+
+  <rect x="130" y="560" width="1235" height="145" rx="20" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="170" y="605" class="h">访问方式</text>
+  <text x="170" y="645" class="c">页面：http://localhost:11000/api/v1/ecommerce/dashboard</text>
+  <text x="170" y="675" class="c">文档：http://localhost:11000/docs</text>
+  <text x="760" y="645" class="c">PostgreSQL: localhost:5432</text>
+  <text x="760" y="675" class="c">Redis: localhost:6379</text>
+
+  <rect x="160" y="810" width="1180" height="55" rx="16" fill="#111827"/>
+  <text x="195" y="846" font-family="Microsoft YaHei,Arial" font-size="20" font-weight="700" fill="#fff">重点：PostgreSQL 存长期数据，Redis 存短期缓存和事件，FastAPI 把它们组合给前端。</text>
+</svg>

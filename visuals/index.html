@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fastapi-commerce-lab 可视化地图</title>
+  <style>
+    body { margin: 0; background: #f4f6f9; color: #111827; font-family: "Microsoft YaHei", system-ui, sans-serif; }
+    main { width: min(1180px, calc(100vw - 48px)); margin: 36px auto 64px; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    p { color: #475569; font-size: 16px; line-height: 1.7; }
+    section { margin-top: 28px; padding: 18px; background: #fff; border: 1px solid #d9e0eb; border-radius: 12px; }
+    h2 { margin: 0 0 14px; font-size: 22px; }
+    img { display: block; width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; }
+    a { color: #2563eb; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>fastapi-commerce-lab 可视化地图</h1>
+    <p>图片版导览覆盖当前项目：FastAPI、电商数据平台、PostgreSQL、Redis Cache、API Logs。</p>
+
+    <section>
+      <h2>1. 项目总览</h2>
+      <p><a href="./01_project_overview.svg">单独打开图片</a></p>
+      <img src="./01_project_overview.svg" alt="项目总览图">
+    </section>
+
+    <section>
+      <h2>2. 请求与缓存流程</h2>
+      <p><a href="./02_request_flow.svg">单独打开图片</a></p>
+      <img src="./02_request_flow.svg" alt="请求与缓存流程图">
+    </section>
+
+    <section>
+      <h2>3. Docker、PostgreSQL、Redis</h2>
+      <p><a href="./03_docker_database_map.svg">单独打开图片</a></p>
+      <img src="./03_docker_database_map.svg" alt="Docker 数据库关系图">
+    </section>
+
+    <section>
+      <h2>4. Redis HIT / MISS</h2>
+      <p><a href="./04_redis_cache_flow.svg">单独打开图片</a></p>
+      <img src="./04_redis_cache_flow.svg" alt="Redis 缓存流程图">
+    </section>
+  </main>
+</body>
+</html>

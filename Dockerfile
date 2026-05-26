@@ -16,5 +16,6 @@ RUN apt-get update \
 
 COPY . .
 # install pipenv and project dependencies
-RUN pip install pipenv
-RUN pipenv install --system --deploy --ignore-pipfile
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip install pipenv
+RUN pipenv install --system --deploy --ignore-pipfile --pypi-mirror https://pypi.tuna.tsinghua.edu.cn/simple

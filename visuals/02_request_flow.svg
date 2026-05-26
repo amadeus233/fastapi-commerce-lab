@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="820" viewBox="0 0 1500 820">
+  <defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#1f2937"/></marker>
+  <style>.title{font:700 40px "Microsoft YaHei",Arial;fill:#111827}.sub{font:400 19px "Microsoft YaHei",Arial;fill:#475569}.h{font:700 22px "Microsoft YaHei",Arial;fill:#111827}.t{font:400 16px "Microsoft YaHei",Arial;fill:#334155}.c{font:700 16px Consolas,monospace;fill:#0f172a}.line{stroke:#1f2937;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#64748b;stroke-width:2.4;fill:none;marker-end:url(#arrow);stroke-dasharray:8 7}</style></defs>
+  <rect width="1500" height="820" fill="#f8fafc"/>
+  <text x="70" y="70" class="title">请求与数据返回流程</text>
+  <text x="72" y="108" class="sub">前端点击查询后，FastAPI 如何决定查 Redis 还是查 PostgreSQL</text>
+  <rect x="70" y="170" width="210" height="110" rx="16" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/><text x="100" y="213" class="h">1. 前端页面</text><text x="100" y="246" class="c">fetch /metrics</text>
+  <rect x="360" y="170" width="220" height="110" rx="16" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/><text x="390" y="213" class="h">2. FastAPI</text><text x="390" y="246" class="t">解析筛选条件</text>
+  <rect x="660" y="170" width="250" height="110" rx="16" fill="#ecfeff" stroke="#22d3ee" stroke-width="2"/><text x="690" y="213" class="h">3. 生成 cache key</text><text x="690" y="246" class="c">ecommerce:dashboard:{...}</text>
+  <rect x="990" y="170" width="200" height="110" rx="16" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"/><text x="1020" y="213" class="h">4. Redis GET</text><text x="1020" y="246" class="t">查缓存</text>
+  <path d="M280 225 H360" class="line"/><path d="M580 225 H660" class="line"/><path d="M910 225 H990" class="line"/>
+  <rect x="260" y="380" width="360" height="130" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/><text x="295" y="425" class="h">MISS：缓存没有</text><text x="295" y="458" class="t">查询 PostgreSQL 聚合数据</text><text x="295" y="486" class="t">再 SET key EX 60 写入 Redis</text>
+  <rect x="860" y="380" width="360" height="130" rx="18" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"/><text x="895" y="425" class="h">HIT：缓存存在</text><text x="895" y="458" class="t">直接从 Redis 返回 JSON</text><text x="895" y="486" class="t">不查询 PostgreSQL</text>
+  <path d="M1050 280 C900 330 620 330 440 380" class="dash"/><path d="M1090 280 V380" class="dash"/>
+  <rect x="515" y="620" width="470" height="86" rx="18" fill="#111827"/><text x="555" y="655" font-family="Microsoft YaHei,Arial" font-size="22" font-weight="700" fill="#fff">返回前端渲染</text><text x="555" y="684" font-family="Consolas,monospace" font-size="17" fill="#cbd5e1">cache = MISS 或 HIT / elapsed_ms</text>
+  <path d="M440 510 C480 580 590 600 650 620" class="line"/><path d="M1040 510 C1010 580 920 600 850 620" class="line"/>
+</svg>

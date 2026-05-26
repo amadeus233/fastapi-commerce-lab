@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="880" viewBox="0 0 1500 880">
+  <defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#334155"/></marker>
+  <style>.title{font:700 40px "Microsoft YaHei",Arial;fill:#111827}.sub{font:400 19px "Microsoft YaHei",Arial;fill:#475569}.h{font:700 23px "Microsoft YaHei",Arial;fill:#111827}.t{font:400 16px "Microsoft YaHei",Arial;fill:#334155}.c{font:700 15px Consolas,monospace;fill:#0f172a}.line{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#64748b;stroke-width:2.4;fill:none;marker-end:url(#arrow);stroke-dasharray:8 7}</style></defs>
+  <rect width="1500" height="880" fill="#f8fafc"/>
+  <text x="70" y="70" class="title">Redis Cache 学习图：HIT / MISS / TTL / Events</text>
+  <text x="72" y="108" class="sub">这个项目中 Redis 不只是运行起来了，它真正保存了看板缓存和查询事件。</text>
+
+  <rect x="80" y="170" width="310" height="130" rx="18" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="115" y="215" class="h">Cache Key</text><text x="115" y="250" class="c">ecommerce:dashboard:{...}</text><text x="115" y="278" class="t">由日期、品类、状态组成</text>
+
+  <rect x="590" y="170" width="310" height="130" rx="18" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"/>
+  <text x="625" y="215" class="h">String Value</text><text x="625" y="250" class="t">缓存看板 JSON</text><text x="625" y="278" class="c">metrics / products / orders</text>
+
+  <rect x="1100" y="170" width="310" height="130" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+  <text x="1135" y="215" class="h">TTL</text><text x="1135" y="250" class="t">默认 60 秒</text><text x="1135" y="278" class="c">SET key value EX 60</text>
+
+  <path d="M390 235 H590" class="line"/><path d="M900 235 H1100" class="line"/>
+
+  <rect x="80" y="390" width="1330" height="190" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="120" y="438" class="h">MISS 到 HIT</text>
+  <text x="120" y="475" class="t">第一次查询：Redis GET 返回空，FastAPI 查 PostgreSQL，然后写入 Redis。</text>
+  <text x="120" y="510" class="t">第二次相同查询：Redis GET 直接返回缓存 JSON，PostgreSQL 不参与。</text>
+  <text x="120" y="545" class="c">MISS: PostgreSQL -> Redis　　　HIT: Redis -> FastAPI -> Browser</text>
+
+  <rect x="80" y="660" width="620" height="120" rx="18" fill="#ecfeff" stroke="#22d3ee" stroke-width="2"/>
+  <text x="115" y="705" class="h">事件日志</text><text x="115" y="740" class="c">ecommerce:events</text><text x="115" y="765" class="t">Redis List 保存最近 30 次查询事件</text>
+  <rect x="790" y="660" width="620" height="120" rx="18" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="825" y="705" class="h">页面可视化</text><text x="825" y="740" class="t">Redis Cache 页面显示 key、TTL、value 预览、内存</text><text x="825" y="765" class="t">API Logs 页面显示 MISS/HIT 和耗时</text>
+  <path d="M700 720 H790" class="line"/>
+</svg>

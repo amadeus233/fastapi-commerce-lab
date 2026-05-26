@@ -1,85 +1,163 @@
-# FastAPI Template
-A FastAPI template with Redis, Docker and PostgreSQL
+# fastapi-commerce-lab
 
-## Introduction
-This FastAPI template was created out of a need for consistent structure for projects with a setup that's easy to understand and use with as minimal additional setup as possible.
+A FastAPI learning project for an ecommerce analytics dashboard with PostgreSQL, Redis caching, Docker, and API visualization.
 
-### What is hoped to be achieved
-- Simplicity; no need for bloated classes and huge utils that you'll likely never use. Everything here should be very much needed in most projects
-- Low barrier for entry; a template that is easy to start with and does not seem too advanced for beginners to use
-- Production-ready; the above does not remove the important fact that this should be always production-ready without obvious faults
-- Consistency; a smell for codebases is you not having a 'knowing' of where certain code is located. A wanted structure is one that's easy to navigate
+这是一个基于 FastAPI 模板扩展出来的学习项目。它保留了原有后端工程分层，并新增了一个电商数据平台，用来学习：
 
-### What is not hoped to be achieved
-- Batteries-included; this template, whilst influenced by Django, does not aim to provide Django-like capabilities or to have a 'Django, but for FastAPI' setup
-- Utility dump; this template will not be where all sorts of utilities are dumped because, 'why not?'.
+- FastAPI 项目结构
+- PostgreSQL 数据建模与聚合查询
+- Redis 缓存命中与未命中
+- Docker Compose 服务编排
+- Swagger API 文档
+- 简单前端页面如何调用后端 API
 
+## 功能概览
 
-## How to use
-- Copy `.example.env` into a file, `.env`
-- Run `docker-compose up --build` to build and run container. Yes, I expect you to use Docker in this day and age.
+- 电商经营总览页面
+- 商品排行
+- 订单监控
+- PostgreSQL 数据库可视化
+- Redis key / TTL / 内存 / 缓存流程可视化
+- API Logs，观察 `MISS -> HIT`
+- 自动初始化演示电商数据
 
-The above is enough to run your project except you need more than that if you are working on a real application. So, this:
+## 技术栈
 
-### Personalizing the template
-First, head to `app/settings` and edit `Settings.APP_NAME` to reflect the name of your application.
+| 类型 | 技术 |
+| --- | --- |
+| Web 框架 | FastAPI |
+| Web 服务器 | Uvicorn |
+| 数据库 | PostgreSQL |
+| 缓存 | Redis |
+| ORM | SQLAlchemy |
+| 迁移工具 | Alembic |
+| 容器 | Docker Compose |
+| 前端 | 原生 HTML / CSS / JavaScript |
 
-Next, you'll want to run `pipenv install` to ensure you get a Python environment you can attach to your IDE to allow for autocomplete and auto-imports so you don't have yellow and red lines everywhere
+## 快速运行
 
-After this, we head to the .env to edit some of the values to your taste. Each value is explained in the [Config section](#config).
+确保 Docker Desktop 已启动。
 
-### Databases
-Databases can be quite dicey and I'm happy to say Alembic is used to handle migrations and whatnots. This coupled with SQLAlchemy makes the world a better place. Whilst PostgreSQL is assumed to be the default database. You can of course edit things to your liking.
+```powershell
+cd D:\A_Proj_test\fastapi-template
+docker-compose up -d --build
+```
 
-- Create migrations with `docker-compose run web alembic revision -m "Migration message here"`.
-- Run migrations within Docker with `docker-compose run web alembic upgrade head`.
+访问电商数据平台：
 
+```text
+http://localhost:11000/api/v1/ecommerce/dashboard
+```
 
-## Config
-This section documents configuration options and the meaning of settings values and how to use them.
+访问 Swagger API 文档：
 
-### Environmental Variables
-The environmental variables in the [.example.env](./.example.env) file have specific purposes:
-|Key | Description| Default
-|---|---|---|
-|ALLOWED_HOST|The domain you intend to run this application on|0.0.0.0|
-|SECRET_KEY|A secret value used to hash and sign tokens and other security-related stuffs. | meandyouaretogether|
-|DEBUG|A value that evaluates to a boolean to determine whether the app is run in debug mode or production.|True|
-|PORT|Port the application will run on. If you change this from default, you will have to change the value in the [docker-compose.yml](./docker-compose.yml) file.|11000|
-|POSTGRES_USER|This is the default user for the PostgreSQL database. On first run, Docker will use this value to initialize a postgres user so you'll want to set it before your first execution.|sasori|
-|POSTGRES_PASSWORD|This is the default password for the PostgreSQL database. On first run, Docker will use this value to initialize a postgres database so you'll want to set it before your first execution.|sasori|
-|POSTGRES_DB|This is the default PostgreSQL database created. On first run, Docker will use this value to initialize a postgres database so you'll want to set it before your first execution|akatsuki|
-|POSTGRES_TEST_DB|This is the database created for test cases. It is flushed after every test case is run.| hebi
-|POSTGRES_PORT|The port Postgres will run on. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|5432|
-|POSTGRES_HOST|The host set in the docker container where the PostgreSQL instance will be running. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|postgres|
-|REDIS_HOST|The host set in the docker container where the Redis instance will be running. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|redis|
-|REDIS_PORT|The port the application will use to connect to Redis. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|6379|
+```text
+http://localhost:11000/docs
+```
 
-### Application Settings
-Application settings are set in the `app.settings.Settings` class and are used to store app wide configurations. Values are so:
+健康检查接口：
 
-|key|Description|Default|
-|---|---|---|
-|APP_TITLE|Name of the application, will show in the documentation|App Name|
-|ALLOWED_HOST|The domain you intend to run this application on|Derived from `.env` with key `ALLOWED_HOST`|
-|SECRET_KEY|A secret value used to hash and sign tokens and other security-related stuffs.|Derived from `.env` with key `SECRET_KEY`|
-|DEBUG|A value that evaluates to a boolean to determine whether the app is run in debug mode or production.|Derived from `.env` with key `DEBUG`|
-|ALLOWED_PORT|Port the application will run on. If you change this from default, you will have to change the value in the [docker-compose.yml](./docker-compose.yml) file.|Derived from `.env` with key `PORT`|
-|DB_USER|This is the default user for the PostgreSQL database. On first run, Docker will use this value to initialize a postgres user so you'll want to set it before your first execution.|Derived from `.env` with key `POSTGRES_USER`|
-|DB_PASSWORD|This is the default password for the PostgreSQL database. On first run, Docker will use this value to initialize a postgres database so you'll want to set it before your first execution.|Derived from `.env` with key `POSTGRES_PASSWORD`|
-|DB_DB|This is the default PostgreSQL database created. On first run, Docker will use this value to initialize a postgres database so you'll want to set it before your first execution|Derived from `.env` with key `POSTGRES_DB`|
-|DB_PORT|The port Postgres will run on. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|Derived from `.env` with key `POSTGRES_PORT`|
-|DB_HOST|The host set in the docker container where the PostgreSQL instance will be running. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|Derived from `.env` with key `POSTGRES_HOST`|
-|DB_URL|URL leading to the application database|`postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DB}`|
-|TEST_DB|This is the database created for test cases. It is flushed after every test case is run.|Derived from `.env` with key `POSTGRES_TEST_DB`
-|TEST_DB_URL|URL leading to test database|`postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{TEST_DB}`|
-|ACCESS_TOKEN_EXPIRY_TIME|Duration in seconds before access token expires| 60 * 30 (seconds)|
-|REFRESH_TOKEN_EXPIRY_TIME|Duration in seconds before refresh token expires| 60 * 30 (seconds)|
-|PASSWORD_HASHER|Hashing algorithm for passwords|`CryptContext(schemes=["bcrypt"], deprecated="auto")`|
-|JWT_ALGORITHM|Algorithm used to generate JWT token|HS256|
-|REDIS_HOST|The host set in the docker container where the Redis instance will be running. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|Derived from `.env` with key `REDIS_HOST`|
-|REDIS_PORT|The port the application will use to connect to Redis. Don't change it except you know what you're doing, and if you do, change the value in the [docker-compose.yml](./docker-compose.yml) file.|Derived from `.env` with key `REDIS_HOST`|
-|PAGE_SIZE|[Not Implemented] default size of page for paginated items|50
+```text
+http://localhost:11000/api/v1/auth/ok
+```
 
-## I don't want some things
-There is the possibility that you may not want some features such as Redis. You can easily remove what you don't need and proceed as planned.
+## 服务组成
+
+`docker-compose.yml` 会启动三个服务：
+
+| 服务 | 作用 | 端口 |
+| --- | --- | --- |
+| web | FastAPI 应用 | 11000 |
+| postgres | PostgreSQL 数据库 | 5432 |
+| redis | Redis 缓存 | 6379 |
+
+## 演示数据
+
+项目启动时会自动初始化演示数据：
+
+| 数据 | 数量 |
+| --- | --- |
+| 客户 | 320 |
+| 商品 | 150 |
+| 订单 | 2500 |
+| 订单明细 | 6264 |
+
+这些数据是模拟生成的学习数据，不是真实交易数据。  
+但它们会真实写入 PostgreSQL，页面会真实经过 FastAPI、PostgreSQL、Redis 后返回结果。
+
+## Redis 学习方式
+
+1. 打开电商看板页面。
+2. 选择筛选条件，点击“查询数据”。
+3. 第一次通常显示 `CACHE MISS`，说明 Redis 没有缓存，后端查询 PostgreSQL。
+4. 再点一次同样查询，通常显示 `CACHE HIT`，说明后端直接从 Redis 返回。
+5. 切换到左侧 `Redis Cache`，查看 key、TTL、缓存大小。
+6. 切换到 `API Logs`，观察最近请求事件。
+
+## 常用命令
+
+查看容器：
+
+```powershell
+docker-compose ps
+```
+
+查看 web 日志：
+
+```powershell
+docker-compose logs -f web
+```
+
+查看 Redis key：
+
+```powershell
+docker-compose exec redis redis-cli keys "ecommerce:*"
+```
+
+查看 PostgreSQL 数据量：
+
+```powershell
+docker-compose exec postgres psql -U sasori -d akatsuki -c "select 'customers' as table, count(*) from ecommerce_customers union all select 'products', count(*) from ecommerce_products union all select 'orders', count(*) from ecommerce_orders union all select 'order_items', count(*) from ecommerce_order_items;"
+```
+
+停止项目：
+
+```powershell
+docker-compose down
+```
+
+## 关键文档
+
+| 文件 | 说明 |
+| --- | --- |
+| `PROJECT_REVIEW_CN.md` | 中文深度 review |
+| `PROJECT_VISUAL_MAP_CN.md` | Mermaid 可视化结构图 |
+| `ECOMMERCE_PLATFORM_CN.md` | 电商平台学习说明 |
+| `visuals/index.html` | 图片版可视化入口 |
+
+## 项目结构
+
+```text
+main.py                 FastAPI 入口
+app/                    通用基础层：配置、数据库、路由、模型基类
+auth/                   原认证模块示例
+ecommerce/              电商数据平台模块
+alembic/                数据库迁移配置
+visuals/                项目可视化图片
+docker-compose.yml      web + postgres + redis 编排
+Dockerfile              web 镜像构建
+```
+
+## 学习重点
+
+这个项目的重点不是完整商业功能，而是理解后端工程链路：
+
+```text
+浏览器
+  -> FastAPI API
+  -> Redis GET
+  -> 缓存 HIT 直接返回
+  -> 缓存 MISS 查询 PostgreSQL
+  -> Redis SET EX 60
+  -> JSON 返回前端
+```
