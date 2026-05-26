@@ -21,6 +21,26 @@ A FastAPI learning project for an ecommerce analytics dashboard with PostgreSQL,
 - API Logs，观察 `MISS -> HIT`
 - 自动初始化演示电商数据
 
+## 项目可视化图表
+
+这些图表可以帮助初学者快速理解：这个项目有哪些模块、一次请求怎样经过 FastAPI / Redis / PostgreSQL，以及 Docker 容器之间如何协作。
+
+### 1. 项目整体结构
+
+![项目整体结构](visuals/01_project_overview.svg)
+
+### 2. 前端请求到后端返回数据的流程
+
+![请求处理流程](visuals/02_request_flow.svg)
+
+### 3. Docker、FastAPI、PostgreSQL、Redis 的关系
+
+![Docker 和数据库关系](visuals/03_docker_database_map.svg)
+
+### 4. Redis 缓存 HIT / MISS 流程
+
+![Redis 缓存流程](visuals/04_redis_cache_flow.svg)
+
 ## 技术栈
 
 | 类型 | 技术 |
